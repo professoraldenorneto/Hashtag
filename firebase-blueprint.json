@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role-based access",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["teacher", "student"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "Hashtag": {
+      "title": "Hashtag Token",
+      "description": "Evaluation token with unique code",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "teacherId": { "type": "string" },
+        "subjectId": { "type": "string" },
+        "activityName": { "type": "string" },
+        "points": { "type": "number" },
+        "isRedeemed": { "type": "boolean" },
+        "redeemedBy": { "type": "string" },
+        "redeemedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["code", "teacherId", "subjectId", "activityName", "points", "isRedeemed"]
+    },
+    "Subject": {
+      "title": "Subject",
+      "description": "Academic subject managed by a teacher",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "teacherId": { "type": "string" }
+      },
+      "required": ["id", "name", "teacherId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/subjects/{subjectId}": {
+      "schema": "Subject",
+      "description": "Subjects mapping"
+    },
+    "/hashtags/{hashtagId}": {
+      "schema": "Hashtag",
+      "description": "Hashtag tokens (codes are unique)"
+    }
+  }
+}
