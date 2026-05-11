@@ -56,19 +56,40 @@ export default function StudentDashboard({ user, profile }: { user: User, profil
   };
 
   const handleRedeem = async () => {
-    if (!code) return;
+    // Remove all whitespace and the '#' character
+    const cleanCode = code.replace(/[#\s]/g, '').toUpperCase();
+    if (!cleanCode) return;
     setRedeeming(true);
     
     try {
+      console.log('Tentando resgatar código:', cleanCode);
+      
+      // First, try to find the hashtag by code regardless of redemption status to give better feedback
       const { data: hashtag, error: findError } = await supabase
         .from('hashtags')
-        .select('id')
-        .eq('code', code.toUpperCase().trim())
-        .eq('is_redeemed', false)
-        .single();
+        .select('*')
+        .eq('code', cleanCode)
+        .maybeSingle(); // Use maybeSingle to avoid 406/PGRST116 errors if possible
       
-      if (findError || !hashtag) {
-        toast.error("Código inválido ou já utilizado.");
+      if (findError) {
+        console.error('Erro na busca:', findError);
+        toast.error("Erro ao validar código no servidor.");
+        setRedeeming(false);
+        return;
+      }
+
+      if (!hashtag) {
+        toast.error(`Hashtag "${cleanCode}" não encontrada.`);
+        setRedeeming(false);
+        return;
+      }
+
+      if (hashtag.is_redeemed) {
+        if (hashtag.redeemed_by === user.id) {
+          toast.error("Você já resgatou esta hashtag!");
+        } else {
+          toast.error("Este código já foi utilizado por outro aluno.");
+        }
         setRedeeming(false);
         return;
       }

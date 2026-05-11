@@ -80,7 +80,12 @@ export default function TeacherDashboard({ user, profile }: { user: User, profil
   };
 
   const generateCode = () => {
-    return Math.random().toString(36).substring(2, 8).toUpperCase();
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Avoid confusing O, 0, I, 1
+    let result = '';
+    for (let i = 0; i < 6; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
   };
 
   const handleAddHashtags = async () => {

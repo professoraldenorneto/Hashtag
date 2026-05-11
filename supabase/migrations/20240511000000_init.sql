@@ -53,6 +53,5 @@ create policy "Students can redeem hashtags." on hashtags for update
   using (not is_redeemed)
   with check (
     is_redeemed = true and 
-    redeemed_by = auth.uid() and 
-    redeemed_at = now()
+    redeemed_by = auth.uid()
   );
