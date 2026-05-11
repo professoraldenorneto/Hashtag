@@ -127,23 +127,6 @@ export default function Login() {
             </button>
           </form>
 
-          <div className="relative my-8">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-100"></div>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-4 text-slate-400 font-bold tracking-widest">ou</span>
-            </div>
-          </div>
-
-          <button
-            onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center gap-3 py-4 px-6 bg-white border border-slate-200 text-slate-700 rounded-2xl font-bold hover:bg-slate-50 transition-all"
-          >
-            <LogIn size={20} />
-            Entrar com Google
-          </button>
-
           <div className="mt-8 text-center text-sm">
             <span className="text-slate-500">
               {isSignUp ? 'Já tem uma conta?' : 'Não tem uma conta?'}
